@@ -22,8 +22,22 @@ Current time:
 
 More
 
-[% include_file partial.txt post_markdown=True %]
+```
+[% include_file partial.txt post_markdown=False %]
+```
 
 [% include_file partial.txt post_markdown=False %]
 
-Done
+Done. A simple table:
+
+| a | b | c |
+|---|---|---|
+| a | b | c |
+| a | b | c |
+| a | b | c |
+| a | b | c |
+
+A csv:
+
+[% table_from_file test.csv %]
+

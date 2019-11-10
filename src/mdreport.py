@@ -3,6 +3,8 @@
 import datetime
 import uuid
 import argparse
+import csv
+import html
 
 import shortcodes
 import pytz
@@ -30,6 +32,35 @@ def include_file(context, content, pargs, kwargs):
         file_contents = f.read().strip()
         return placeholder(file_contents) if post_markdown else file_contents
 
+@shortcodes.register('table_from_file')
+def table_from_file(context, content, pargs, kwargs):
+    table_file = pargs[0]
+    with open(table_file, newline='') as f:
+        reader = csv.reader(f)
+        rows = list(reader)
+    table_html = """
+<table>
+<thead>
+<tr>
+%s
+</tr>
+</thead>
+<tbody>
+%s
+</tbody>
+</table>
+"""
+    header = '\n'.join('<th>' + html.escape(e) + '</th>' for e in rows[0])
+    body = []
+    for row in rows[1:]:
+        body.append('<tr>')
+        for e in row:
+            body.append('<td>' + html.escape(e) + '</td>')
+        body.append('</tr>')
+    body = '\n'.join(body)
+    rendered_table = table_html % (header, body)
+    return placeholder(rendered_table)
+
 arg_parser = argparse.ArgumentParser(description='Process MarkdownReport')
 arg_parser.add_argument('mdr_file', help='an mdr file to process')
 args = arg_parser.parse_args()
@@ -39,7 +70,8 @@ with open(args.mdr_file) as f:
 
 sc_parser = shortcodes.Parser()
 output = sc_parser.parse(text, context=None)
-html = markdown.markdown(output)
+html = markdown.markdown(output, extensions=['markdown.extensions.fenced_code',
+    'markdown.extensions.tables'])
 for ph, text in markdown_placeholders.items():
     html = html.replace(ph, text)
 

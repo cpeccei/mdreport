@@ -43,8 +43,10 @@ A csv:
 
 A tsv:
 
-[% table_from_file test.tsv dialect="excel-tab" %]
+[% table_from_file test.tsv dialect=excel-tab %]
 
 Car info:
 
 [% table_from_file cars.csv %]
+
+

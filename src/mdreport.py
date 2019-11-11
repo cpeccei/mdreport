@@ -35,8 +35,9 @@ def include_file(context, content, pargs, kwargs):
 @shortcodes.register('table_from_file')
 def table_from_file(context, content, pargs, kwargs):
     table_file = pargs[0]
+    dialect = kwargs.get('dialect', 'excel')
     with open(table_file, newline='') as f:
-        reader = csv.reader(f, **kwargs)
+        reader = csv.reader(f, dialect=dialect)
         rows = list(reader)
     table_html = """
 <table>

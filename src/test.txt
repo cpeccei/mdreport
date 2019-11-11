@@ -23,10 +23,10 @@ Current time:
 More
 
 ```
-[% include_file partial.txt post_markdown=False %]
+[% include_file partial.txt %]
 ```
 
-[% include_file partial.txt post_markdown=False %]
+[% include_file partial.txt %]
 
 Done. A simple table:
 
@@ -41,3 +41,10 @@ A csv:
 
 [% table_from_file test.csv %]
 
+A tsv:
+
+[% table_from_file test.tsv dialect="excel-tab" %]
+
+Car info:
+
+[% table_from_file cars.csv %]

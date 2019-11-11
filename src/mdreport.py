@@ -36,7 +36,7 @@ def include_file(context, content, pargs, kwargs):
 def table_from_file(context, content, pargs, kwargs):
     table_file = pargs[0]
     with open(table_file, newline='') as f:
-        reader = csv.reader(f)
+        reader = csv.reader(f, **kwargs)
         rows = list(reader)
     table_html = """
 <table>
